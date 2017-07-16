@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jeffmon/articles-products-and-express#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express-handlebars": "^3.0.0"
   }
 }
