@@ -71,6 +71,8 @@ app.post('/products', (req, res) => {
   res.end();
 });
 
+
+
 app.route("/products/:id")
   .put((req, res) => {
     console.log("put before: ");
