@@ -78,6 +78,15 @@ const postArticle = (obj) => {
   }
 };
 
+const deleteArticle = (obj) => {
+  allArticles.forEach((e) => {
+    if(obj.params.id === e.id){
+    var location = allArticles.indexOf(e);
+    allArticles.splice(location, 1);
+    }
+  });
+};
+
 
 const hbs = exphbs.create({
   defaultLayout: "main",
@@ -147,8 +156,15 @@ app.route("/products/:id")
       putArticle(req);
       console.log("put after: ");
       console.log(allArticles);
-      res.end();
-    });
+    })
+    .delete((req, res) => {
+    console.log("before: ");
+    console.log(allArticles);
+    deleteArticle(req);
+    console.log("after: ");
+    console.log(allArticles);
+    res.end();
+  });
 
 
 
