@@ -6,6 +6,7 @@ const exphbs = require("express-handlebars");
 
 var count = 1;
 var allProducts = [];
+var product;
 
 app.use(bodyParser.json());
 
@@ -26,6 +27,14 @@ const deleteData = (obj) => {
     if(parseInt(obj.params.id) === e.id){
     var location = allProducts.indexOf(e);
     allProducts.splice(location, 1);
+    }
+  });
+};
+
+const getData = (obj) => {
+  allProducts.forEach((e) => {
+    if(parseInt(obj.params.id) === e.id){
+      product = e;
     }
   });
 };
@@ -53,15 +62,19 @@ const hbs = exphbs.create({
   extname: ".hbs"
 });
 
-app.engine("hbs", hbs.engine);
-app.set("view engine", "hbs");
+app.engine(".hbs", hbs.engine);
+app.set("view engine", ".hbs");
 
 
-app.get("/", (req, res) => {
-  res.render();
+app.get('/', (req, res) => {
+    res.render('home');
 });
 
-app.post('/products', (req, res) => {
+app.route("/products")
+.get((req, res) => {
+  res.render('index', { products: allProducts});
+})
+.post((req, res) => {
   postData(req.body);
   console.log("post: ");
   console.log(allProducts);
@@ -71,9 +84,12 @@ app.post('/products', (req, res) => {
   res.end();
 });
 
-
-
 app.route("/products/:id")
+  .get((req,res) => {
+     getData(req);
+     console.log(product);
+     res.render('product', { product: product});
+  })
   .put((req, res) => {
     console.log("put before: ");
     console.log(allProducts);
@@ -90,8 +106,6 @@ app.route("/products/:id")
     console.log(allProducts);
     res.end();
   });
-
-
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
