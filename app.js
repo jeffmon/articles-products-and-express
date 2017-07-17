@@ -6,6 +6,7 @@ const exphbs = require("express-handlebars");
 
 var count = 1;
 var allProducts = [];
+var allArticles = [];
 var product;
 
 app.use(bodyParser.json());
@@ -57,6 +58,27 @@ const postData = (obj) => {
   }
 };
 
+const putArticle = (obj) => {
+  allArticles.forEach((e) =>{
+    if(e.title === obj.body.title && obj.params.title === e.title){
+      e.body = obj.body.body;
+      e.author = obj.body.author;
+    }
+  });
+};
+
+const postArticle = (obj) => {
+  var values = Object.keys(obj).map((key) => {
+    return obj[key];
+  });
+  var keys = Object.keys(obj).toString();
+  if (keys === 'title,body,author' && values.some(stringChecker) === true) {
+    obj.urlTitle = encodeURI(obj.title);
+    allArticles.push(obj);
+  }
+};
+
+
 const hbs = exphbs.create({
   defaultLayout: "main",
   extname: ".hbs"
@@ -106,6 +128,29 @@ app.route("/products/:id")
     console.log(allProducts);
     res.end();
   });
+
+  app.route("/articles")
+    .post((req,res) => {
+      postArticle(req.body);
+      console.log("post: ");
+      console.log(allArticles);
+      res.json({
+        "success": true
+      });
+      res.end();
+    });
+
+  app.route("/articles/:title")
+    .put((req, res) => {
+      console.log("put before: ");
+      console.log(allArticles);
+      putArticle(req);
+      console.log("put after: ");
+      console.log(allArticles);
+      res.end();
+    });
+
+
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
