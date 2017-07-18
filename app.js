@@ -17,8 +17,8 @@ const stringChecker = (element) => {
 };
 
 const putData = (obj) => {
-  allProducts.forEach((e) =>{
-    if(e.id === obj.body.id && parseInt(obj.params.id) === e.id){
+  allProducts.forEach((e) => {
+    if (e.id === obj.body.id && parseInt(obj.params.id) === e.id) {
       e.name = obj.body.name;
     }
   });
@@ -26,16 +26,16 @@ const putData = (obj) => {
 
 const deleteData = (obj) => {
   allProducts.forEach((e) => {
-    if(parseInt(obj.params.id) === e.id){
-    var location = allProducts.indexOf(e);
-    allProducts.splice(location, 1);
+    if (parseInt(obj.params.id) === e.id) {
+      var location = allProducts.indexOf(e);
+      allProducts.splice(location, 1);
     }
   });
 };
 
 const getData = (obj) => {
   allProducts.forEach((e) => {
-    if(parseInt(obj.params.id) === e.id){
+    if (parseInt(obj.params.id) === e.id) {
       product = e;
     }
   });
@@ -60,8 +60,8 @@ const postData = (obj) => {
 };
 
 const putArticle = (obj) => {
-  allArticles.forEach((e) =>{
-    if(e.title === obj.body.title && obj.params.title === e.title){
+  allArticles.forEach((e) => {
+    if (e.title === obj.body.title && obj.params.title === e.title) {
       e.body = obj.body.body;
       e.author = obj.body.author;
     }
@@ -81,7 +81,7 @@ const postArticle = (obj) => {
 
 const getArticle = (obj) => {
   allArticles.forEach((e) => {
-    if(obj.params.id === e.id){
+    if (obj.params.id === e.id) {
       article = e;
     }
   });
@@ -89,9 +89,9 @@ const getArticle = (obj) => {
 
 const deleteArticle = (obj) => {
   allArticles.forEach((e) => {
-    if(obj.params.id === e.id){
-    var location = allArticles.indexOf(e);
-    allArticles.splice(location, 1);
+    if (obj.params.id === e.id) {
+      var location = allArticles.indexOf(e);
+      allArticles.splice(location, 1);
     }
   });
 };
@@ -107,28 +107,32 @@ app.set("view engine", ".hbs");
 
 
 app.get('/', (req, res) => {
-    res.render('home');
+  res.render('home');
 });
 
 app.route("/products")
-.get((req, res) => {
-  res.render('index', { products: allProducts});
-})
-.post((req, res) => {
-  postData(req.body);
-  console.log("post: ");
-  console.log(allProducts);
-  res.json({
-    "success": true
+  .get((req, res) => {
+    res.render('index', {
+      products: allProducts
+    });
+  })
+  .post((req, res) => {
+    postData(req.body);
+    console.log("post: ");
+    console.log(allProducts);
+    res.json({
+      "success": true
+    });
+    res.end();
   });
-  res.end();
-});
 
 app.route("/products/:id")
-  .get((req,res) => {
-     getData(req);
-     console.log(product);
-     res.render('product', { product: product});
+  .get((req, res) => {
+    getData(req);
+    console.log(product);
+    res.render('product', {
+      product: product
+    });
   })
   .put((req, res) => {
     console.log("put before: ");
@@ -147,34 +151,38 @@ app.route("/products/:id")
     res.end();
   });
 
-  app.route("/articles")
-    .get((req,res) => {
-     res.render('index', { articles: allArticles});
-    })
-    .post((req,res) => {
-      postArticle(req.body);
-      console.log("post: ");
-      console.log(allArticles);
-      res.json({
-        "success": true
-      });
-      res.end();
+app.route("/articles")
+  .get((req, res) => {
+    res.render('index', {
+      articles: allArticles
     });
+  })
+  .post((req, res) => {
+    postArticle(req.body);
+    console.log("post: ");
+    console.log(allArticles);
+    res.json({
+      "success": true
+    });
+    res.end();
+  });
 
-  app.route("/articles/:title")
-    .get((req,res) => {
-     getArticle(req);
-     console.log(article);
-     res.render('article', { article: article});
-    })
-    .put((req, res) => {
-      console.log("put before: ");
-      console.log(allArticles);
-      putArticle(req);
-      console.log("put after: ");
-      console.log(allArticles);
-    })
-    .delete((req, res) => {
+app.route("/articles/:title")
+  .get((req, res) => {
+    getArticle(req);
+    console.log(article);
+    res.render('article', {
+      article: article
+    });
+  })
+  .put((req, res) => {
+    console.log("put before: ");
+    console.log(allArticles);
+    putArticle(req);
+    console.log("put after: ");
+    console.log(allArticles);
+  })
+  .delete((req, res) => {
     console.log("before: ");
     console.log(allArticles);
     deleteArticle(req);
