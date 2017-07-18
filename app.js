@@ -8,6 +8,7 @@ var count = 1;
 var allProducts = [];
 var allArticles = [];
 var product;
+var article;
 
 app.use(bodyParser.json());
 
@@ -78,6 +79,14 @@ const postArticle = (obj) => {
   }
 };
 
+const getArticle = (obj) => {
+  allArticles.forEach((e) => {
+    if(obj.params.id === e.id){
+      article = e;
+    }
+  });
+};
+
 const deleteArticle = (obj) => {
   allArticles.forEach((e) => {
     if(obj.params.id === e.id){
@@ -139,6 +148,9 @@ app.route("/products/:id")
   });
 
   app.route("/articles")
+    .get((req,res) => {
+     res.render('index', { articles: allArticles});
+    })
     .post((req,res) => {
       postArticle(req.body);
       console.log("post: ");
@@ -150,6 +162,11 @@ app.route("/products/:id")
     });
 
   app.route("/articles/:title")
+    .get((req,res) => {
+     getArticle(req);
+     console.log(article);
+     res.render('article', { article: article});
+    })
     .put((req, res) => {
       console.log("put before: ");
       console.log(allArticles);
