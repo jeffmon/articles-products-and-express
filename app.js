@@ -81,7 +81,7 @@ const postArticle = (obj) => {
 
 const getArticle = (obj) => {
   allArticles.forEach((e) => {
-    if (obj.params.id === e.id) {
+    if (obj.params.title === e.title) {
       article = e;
     }
   });
@@ -89,7 +89,7 @@ const getArticle = (obj) => {
 
 const deleteArticle = (obj) => {
   allArticles.forEach((e) => {
-    if (obj.params.id === e.id) {
+    if (obj.params.title === e.title) {
       var location = allArticles.indexOf(e);
       allArticles.splice(location, 1);
     }
