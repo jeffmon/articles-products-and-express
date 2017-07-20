@@ -1,4 +1,19 @@
 <div>
+  <form action="/products-submission" method="post">
+  <label for="name">Name</label>
+  <input id="name" type="text" name="name" placeholder="Name of product">
+  <br>
+  <label for="price">Price</label>
+  <input id = "price" type="text" name="price" placeholder="Price">
+  <br>
+  <label for="inventory">Inventory</label>
+  <input id = "inventory" type="text" name="inventory" placeholder="Inventory">
+  <br>
+  <input type="submit" name="" value="Send">
+</form>
+</div>
+
+<div>
     {{#each products}}
         <div class= "products">
           <p>Name:{{name}}<br>Inventory: {{inventory}} <br> Id: {{id}} </p>

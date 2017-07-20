@@ -10,7 +10,7 @@ var allArticles = [];
 var product;
 var article;
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 const stringChecker = (element) => {
   return typeof element === "string";
@@ -115,14 +115,28 @@ app.route("/products")
     res.render('index', {
       products: allProducts
     });
-  })
-  .post((req, res) => {
+  });
+  // .post((req, res) => {
+  //   postData(req.body);
+  //   // console.log("post: ");
+  //   // console.log(allProducts);
+  //   console.log(req.body);
+  //   // res.json({
+  //   //   "success": true
+  //   // });
+  //   res.redirect("/products");
+  //   res.end();
+  // });
+
+  app.post("/products-submission", (req, res) => {
     postData(req.body);
-    console.log("post: ");
-    console.log(allProducts);
-    res.json({
-      "success": true
-    });
+    // console.log("post: ");
+    // console.log(allProducts);
+    console.log(req.body);
+    // res.json({
+    //   "success": true
+    // });
+    res.redirect("/products");
     res.end();
   });
 
