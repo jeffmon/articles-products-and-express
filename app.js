@@ -110,35 +110,23 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
+app.get("/products/new", (req, res) => {
+  res.render("new");
+});
+
 app.route("/products")
   .get((req, res) => {
     res.render('index', {
       products: allProducts
     });
   });
-  // .post((req, res) => {
-  //   postData(req.body);
-  //   // console.log("post: ");
-  //   // console.log(allProducts);
-  //   console.log(req.body);
-  //   // res.json({
-  //   //   "success": true
-  //   // });
-  //   res.redirect("/products");
-  //   res.end();
-  // });
 
-  app.post("/products-submission", (req, res) => {
-    postData(req.body);
-    // console.log("post: ");
-    // console.log(allProducts);
-    console.log(req.body);
-    // res.json({
-    //   "success": true
-    // });
-    res.redirect("/products");
-    res.end();
-  });
+app.post("/products-submission", (req, res) => {
+  postData(req.body);
+  console.log(req.body);
+  res.redirect("/products");
+  res.end();
+});
 
 app.route("/products/:id")
   .get((req, res) => {
