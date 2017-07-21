@@ -49,7 +49,7 @@ const postData = (obj) => {
 
   var keys = Object.keys(obj).toString();
 
-  if (keys === 'name,price,inventory' && values.some(stringChecker) === true) {
+  if (keys === 'name,price,inventory' && values.some(stringChecker) === true)  {
     let price = parseInt(obj.price);
     let inventory = parseInt(obj.inventory);
     obj.id = count;
@@ -57,7 +57,10 @@ const postData = (obj) => {
     obj.inventory = inventory;
     allProducts.push(obj);
     count++;
-  }
+    return true;
+  }else{
+      return false;
+    }
 };
 
 const putArticle = (obj) => {
@@ -118,6 +121,15 @@ app.get("/products/:id/edit", (req, res) => {
   res.render("edit", {product:product});
 });
 
+app.post("/products-edit", (req, res) => {
+  putData(req);
+  console.log(req.body);
+  console.log(allProducts);
+  res.redirect("/products");
+  res.end();
+});
+
+
 app.route("/products")
   .get((req, res) => {
     res.render('index', {
@@ -126,10 +138,15 @@ app.route("/products")
   });
 
 app.post("/products-submission", (req, res) => {
-  postData(req.body);
-  console.log(req.body);
+  var post = postData(req.body);
+  if(post === true){
+  console.log(allProducts);
   res.redirect("/products");
   res.end();
+}else{
+  res.redirect("/products/new");
+  res.end();
+}
 });
 
 app.route("/products/:id")

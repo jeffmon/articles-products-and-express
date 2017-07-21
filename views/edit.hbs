@@ -1,5 +1,6 @@
 <div>
-  <form action="/products-submission" method="post">
+  <form action="/products-edit" method="post">
+  <input type="hidden" name="_METHOD" value="PUT"/>
   <label for="name">Name</label>
   <input id="name" type="text" name="name" value={{product.name}}>
   <br>
