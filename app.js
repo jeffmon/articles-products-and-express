@@ -65,6 +65,24 @@ const postData = (obj) => {
   }
 };
 
+const postArticle = (obj) => {
+
+  var values = Object.keys(obj).map((key) => {
+    return obj[key];
+  });
+
+  var keys = Object.keys(obj).toString();
+
+  if (keys === 'title,author,body' && values.some(stringChecker) === true) {
+    obj.urlTitle = encodeURI(obj.title);
+    allArticles.push(obj);
+    console.log(allArticles);
+    return true;
+  } else{
+    return false;
+  }
+};
+
 const putArticle = (obj) => {
   allArticles.forEach((e) => {
     if (e.title === obj.body.title && obj.params.title === e.title) {
@@ -72,17 +90,6 @@ const putArticle = (obj) => {
       e.author = obj.body.author;
     }
   });
-};
-
-const postArticle = (obj) => {
-  var values = Object.keys(obj).map((key) => {
-    return obj[key];
-  });
-  var keys = Object.keys(obj).toString();
-  if (keys === 'title,body,author' && values.some(stringChecker) === true) {
-    obj.urlTitle = encodeURI(obj.title);
-    allArticles.push(obj);
-  }
 };
 
 const getArticle = (obj) => {
