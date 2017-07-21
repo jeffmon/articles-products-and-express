@@ -73,7 +73,7 @@ const postArticle = (obj) => {
 
   var keys = Object.keys(obj).toString();
 
-  if (keys === 'title,author,body' && values.some(stringChecker) === true) {
+  if (keys === 'title,author,body' && values.some(stringChecker) === true && values[0] !== ""&& values[1] !== ""&& values[2] !== "") {
     obj.urlTitle = encodeURI(obj.title);
     allArticles.push(obj);
     console.log(allArticles);
