@@ -96,7 +96,7 @@ const postArticle = (obj) => {
 
 const putArticle = (obj) => {
   allArticles.forEach((e) => {
-    if (e.title === obj.body.title && obj.params.title === e.title) {
+    if (e.title === obj.body.title) {
       e.body = obj.body.body;
       e.author = obj.body.author;
     }
@@ -137,6 +137,7 @@ app.get("/products/new", (req, res) => {
 });
 
 var productID = null;
+var articleID = null;
 
 app.get("/products/:id/edit", (req, res) => {
   getData(req);
@@ -146,18 +147,8 @@ app.get("/products/:id/edit", (req, res) => {
   });
 });
 
-// app.put("/products-edit", (req, res) => {
-//   putData(req);
-//   //console.log(req.body);
-//   console.log(allProducts);
-//   res.redirect("/products");
-//   res.end();
-// });
 
 app.route("/products-edit")
-  // .post((req, res) =>{
-  //   console.log("posting the route");
-  // })
   .put((req, res) => {
     req.body.id = productID;
     console.log(typeof req.body.id);
@@ -218,6 +209,23 @@ app.get("/articles/new", (req, res) => {
   });
   errorMessage = null;
 });
+
+app.get("/articles/:title/edit", (req, res) => {
+  getArticle(req);
+  articleID = req.params.title;
+  res.render("articles/edit", {
+    article: article
+  });
+});
+
+app.route("/articles-edit")
+  .put((req, res) => {
+    req.body.title = articleID;
+    putArticle(req);
+    articleID = null;
+    res.redirect("/articles");
+    res.end();
+  });
 
 app.post("/articles-submission", (req, res) => {
   var post = postArticle(req.body);

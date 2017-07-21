@@ -1,15 +1,15 @@
 <div>
-  <form action="/products-edit" method="post">
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" value= {{product.name}}>
-    <br>
-    <label for="price">Price</label>
-    <input id="price" type="text" name="price" value= {{product.price}}>
-    <br>
-    <label for="inventory">Inventory</label>
-    <input id="inventory" type="text" name="inventory" value= {{product.inventory}}>
-    <br>
+  <form action="/articles-edit" method="post">
     <input type="hidden" name="_method" value="PUT">
+    <label for="title">Title</label>
+    <input id="title" type="text" name="title" value= {{article.title}}>
+    <br>
+    <label for="author">Author</label>
+    <input id="author" type="text" name="author" value= {{article.author}}>
+    <br>
+    <label for="body">Body</label>
+    <input id="body" type="text" name="body" value= {{article.body}}>
+    <br>
     <input type="submit" value="Send">
   </form>
 </div>
