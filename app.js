@@ -3,14 +3,25 @@ const app = express();
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const exphbs = require("express-handlebars");
+const methodOverride = require("method-override");
 
 var count = 1;
 var allProducts = [];
 var allArticles = [];
 var product;
 var article;
+var errorMessage = null;
 
 app.use(bodyParser.urlencoded());
+app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
 
 const stringChecker = (element) => {
   return typeof element === "string";
@@ -73,12 +84,12 @@ const postArticle = (obj) => {
 
   var keys = Object.keys(obj).toString();
 
-  if (keys === 'title,author,body' && values.some(stringChecker) === true && values[0] !== ""&& values[1] !== ""&& values[2] !== "") {
+  if (keys === 'title,author,body' && values.some(stringChecker) === true && values[0] !== "" && values[1] !== "" && values[2] !== "") {
     obj.urlTitle = encodeURI(obj.title);
     allArticles.push(obj);
     console.log(allArticles);
     return true;
-  } else{
+  } else {
     return false;
   }
 };
@@ -119,7 +130,8 @@ app.set("view engine", ".hbs");
 
 
 app.get("/products/new", (req, res) => {
-  res.render("products/new");
+  res.render("products/new", {error: errorMessage});
+  errorMessage = null;
 });
 
 app.get("/products/:id/edit", (req, res) => {
@@ -129,14 +141,24 @@ app.get("/products/:id/edit", (req, res) => {
   });
 });
 
-app.post("/products-edit", (req, res) => {
-  putData(req);
-  console.log(req.body);
-  console.log(allProducts);
-  res.redirect("/products");
-  res.end();
-});
+// app.put("/products-edit", (req, res) => {
+//   putData(req);
+//   //console.log(req.body);
+//   console.log(allProducts);
+//   res.redirect("/products");
+//   res.end();
+// });
 
+app.route("/products-edit")
+  // .post((req, res) =>{
+  //   console.log("posting the route");
+  // })
+  .put((req, res) => {
+    putData(req);
+    console.log(allProducts);
+    res.redirect("/products");
+    res.end();
+  });
 
 app.route("/products")
   .get((req, res) => {
@@ -152,6 +174,7 @@ app.post("/products-submission", (req, res) => {
     res.redirect("/products");
     res.end();
   } else {
+    errorMessage = "All required fields must be completed and price/inventory have to be numbers";
     res.redirect("/products/new");
     res.end();
   }
@@ -182,10 +205,11 @@ app.route("/products/:id")
     res.end();
   });
 
-  var errorMessage = null;
-
 app.get("/articles/new", (req, res) => {
-  res.render("articles/new", {error: errorMessage});
+  res.render("articles/new", {
+    error: errorMessage
+  });
+  errorMessage = null;
 });
 
 app.post("/articles-submission", (req, res) => {
@@ -195,7 +219,7 @@ app.post("/articles-submission", (req, res) => {
     res.redirect("/articles");
     res.end();
   } else {
-    errorMessage = "All required fields must be completed"
+    errorMessage = "All required fields must be completed";
     res.redirect("/articles/new");
     res.end();
   }
