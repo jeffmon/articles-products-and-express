@@ -14,7 +14,7 @@ var errorMessage = null;
 
 app.use(bodyParser.urlencoded());
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use(methodOverride(function (req, res) {
+app.use(methodOverride(function(req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     // look in urlencoded POST bodies and delete it
     var method = req.body._method;
@@ -29,7 +29,7 @@ const stringChecker = (element) => {
 
 const putData = (obj) => {
   allProducts.forEach((e) => {
-    if (e.id === obj.body.id && parseInt(obj.params.id) === e.id) {
+    if (e.id === obj.body.id ) {
       e.name = obj.body.name;
     }
   });
@@ -130,12 +130,17 @@ app.set("view engine", ".hbs");
 
 
 app.get("/products/new", (req, res) => {
-  res.render("products/new", {error: errorMessage});
+  res.render("products/new", {
+    error: errorMessage
+  });
   errorMessage = null;
 });
 
+var productID = null;
+
 app.get("/products/:id/edit", (req, res) => {
   getData(req);
+  productID = parseInt(req.params.id);
   res.render("products/edit", {
     product: product
   });
@@ -154,8 +159,10 @@ app.route("/products-edit")
   //   console.log("posting the route");
   // })
   .put((req, res) => {
+    req.body.id = productID;
+    console.log(typeof req.body.id);
     putData(req);
-    console.log(allProducts);
+    productID = null;
     res.redirect("/products");
     res.end();
   });
