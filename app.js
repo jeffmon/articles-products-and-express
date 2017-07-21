@@ -41,6 +41,7 @@ const getData = (obj) => {
   });
 };
 
+
 const postData = (obj) => {
   var values = Object.keys(obj).map((key) => {
     return obj[key];
@@ -96,7 +97,6 @@ const deleteArticle = (obj) => {
   });
 };
 
-
 const hbs = exphbs.create({
   defaultLayout: "main",
   extname: ".hbs"
@@ -105,13 +105,17 @@ const hbs = exphbs.create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 
-
 app.get('/', (req, res) => {
   res.render('home');
 });
 
 app.get("/products/new", (req, res) => {
   res.render("new");
+});
+
+app.get("/products/:id/edit", (req, res) => {
+  getData(req);
+  res.render("edit", {product:product});
 });
 
 app.route("/products")
