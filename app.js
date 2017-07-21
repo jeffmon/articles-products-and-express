@@ -182,8 +182,10 @@ app.route("/products/:id")
     res.end();
   });
 
+  var errorMessage = null;
+
 app.get("/articles/new", (req, res) => {
-  res.render("articles/new");
+  res.render("articles/new", {error: errorMessage});
 });
 
 app.post("/articles-submission", (req, res) => {
@@ -193,6 +195,7 @@ app.post("/articles-submission", (req, res) => {
     res.redirect("/articles");
     res.end();
   } else {
+    errorMessage = "All required fields must be completed"
     res.redirect("/articles/new");
     res.end();
   }
