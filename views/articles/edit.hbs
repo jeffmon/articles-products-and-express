@@ -1,0 +1,15 @@
+<div>
+  <form action="/articles-edit" method="post">
+  <input type="hidden" name="_METHOD" value="PUT"/>
+  <label for="name">Name</label>
+  <input id="name" type="text" name="name" value={{product.name}}>
+  <br>
+  <label for="price">Price</label>
+  <input id = "price" type="text" name="price" value={{product.price}}>
+  <br>
+  <label for="inventory">Inventory</label>
+  <input id = "inventory" type="text" name="inventory" value={{product.inventory}}>
+  <br>
+  <input type="submit" name="" value="Send">
+</form>
+</div>

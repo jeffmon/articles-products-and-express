@@ -110,17 +110,14 @@ const hbs = exphbs.create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 
-app.get('/', (req, res) => {
-  res.render('home');
-});
 
 app.get("/products/new", (req, res) => {
-  res.render("new");
+  res.render("products/new");
 });
 
 app.get("/products/:id/edit", (req, res) => {
   getData(req);
-  res.render("edit", {
+  res.render("products/edit", {
     product: product
   });
 });
@@ -136,7 +133,7 @@ app.post("/products-edit", (req, res) => {
 
 app.route("/products")
   .get((req, res) => {
-    res.render('index', {
+    res.render('products/index', {
       products: allProducts
     });
   });
@@ -157,7 +154,7 @@ app.route("/products/:id")
   .get((req, res) => {
     getData(req);
     console.log(product);
-    res.render('product', {
+    res.render('products/product', {
       product: product
     });
   })
@@ -178,9 +175,25 @@ app.route("/products/:id")
     res.end();
   });
 
+app.get("/articles/new", (req, res) => {
+  res.render("articles/new");
+});
+
+app.post("/articles-submission", (req, res) => {
+  var post = postArticle(req.body);
+  if (post === true) {
+    console.log(allArticles);
+    res.redirect("/articles");
+    res.end();
+  } else {
+    res.redirect("/articles/new");
+    res.end();
+  }
+});
+
 app.route("/articles")
   .get((req, res) => {
-    res.render('index', {
+    res.render('articles/index', {
       articles: allArticles
     });
   })
@@ -198,7 +211,7 @@ app.route("/articles/:title")
   .get((req, res) => {
     getArticle(req);
     console.log(article);
-    res.render('article', {
+    res.render('articles/article', {
       article: article
     });
   })
