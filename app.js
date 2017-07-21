@@ -48,8 +48,10 @@ const postData = (obj) => {
   });
 
   var keys = Object.keys(obj).toString();
+  var priceCheck = parseInt(values[1]);
+  var inventoryCheck = parseInt(values[2]);
 
-  if (keys === 'name,price,inventory' && values.some(stringChecker) === true)  {
+  if (keys === 'name,price,inventory' && values.some(stringChecker) === true && isNaN(priceCheck) === false && isNaN(inventoryCheck) === false) {
     let price = parseInt(obj.price);
     let inventory = parseInt(obj.inventory);
     obj.id = count;
@@ -58,9 +60,9 @@ const postData = (obj) => {
     allProducts.push(obj);
     count++;
     return true;
-  }else{
-      return false;
-    }
+  } else {
+    return false;
+  }
 };
 
 const putArticle = (obj) => {
@@ -118,7 +120,9 @@ app.get("/products/new", (req, res) => {
 
 app.get("/products/:id/edit", (req, res) => {
   getData(req);
-  res.render("edit", {product:product});
+  res.render("edit", {
+    product: product
+  });
 });
 
 app.post("/products-edit", (req, res) => {
@@ -139,14 +143,14 @@ app.route("/products")
 
 app.post("/products-submission", (req, res) => {
   var post = postData(req.body);
-  if(post === true){
-  console.log(allProducts);
-  res.redirect("/products");
-  res.end();
-}else{
-  res.redirect("/products/new");
-  res.end();
-}
+  if (post === true) {
+    console.log(allProducts);
+    res.redirect("/products");
+    res.end();
+  } else {
+    res.redirect("/products/new");
+    res.end();
+  }
 });
 
 app.route("/products/:id")
