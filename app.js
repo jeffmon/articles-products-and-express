@@ -41,6 +41,7 @@ const deleteData = (obj) => {
       var location = allProducts.indexOf(e);
       allProducts.splice(location, 1);
     }
+
   });
 };
 
@@ -74,6 +75,7 @@ const postData = (obj) => {
   } else {
     return false;
   }
+
 };
 
 const postArticle = (obj) => {
