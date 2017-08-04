@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
+const productsDb = require('./database/products');
+const articlesDb = require('./database/articles');
 
 var count = 1;
 var allProducts = [];
@@ -71,6 +73,14 @@ const postData = (obj) => {
     obj.inventory = inventory;
     allProducts.push(obj);
     count++;
+    console.log(obj.name);
+    productsDb.insertProductData(obj.name, price, inventory)
+    // .then((data) => {
+    //   console.log(data);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
     return true;
   } else {
     return false;
@@ -90,6 +100,7 @@ const postArticle = (obj) => {
     obj.urlTitle = encodeURI(obj.title);
     allArticles.push(obj);
     console.log(allArticles);
+    articlesDb.insertArticleData(obj.title, obj.body, obj.author);
     return true;
   } else {
     return false;
