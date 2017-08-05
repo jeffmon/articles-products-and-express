@@ -10,7 +10,7 @@ const articlesDb = require('./database/articles');
 var count = 1;
 var allProducts = [];
 var allArticles = [];
-var product;
+var product = [];
 var article;
 var errorMessage = null;
 
@@ -74,7 +74,7 @@ const postData = (obj) => {
     allProducts.push(obj);
     count++;
     console.log(obj.name);
-    productsDb.insertProductData(obj.name, price, inventory)
+    productsDb.insertProductData(obj.name, price, inventory);
     // .then((data) => {
     //   console.log(data);
     // })
@@ -173,9 +173,13 @@ app.route("/products-edit")
 
 app.route("/products")
   .get((req, res) => {
-    res.render('products/index', {
-      products: allProducts
-    });
+    productsDb.getProductData()
+      .then ((data) => {
+        console.log(data);
+        res.render('products/index', {
+            products: data
+        });
+      });
   });
 
 app.post("/products-submission", (req, res) => {
@@ -193,11 +197,14 @@ app.post("/products-submission", (req, res) => {
 
 app.route("/products/:id")
   .get((req, res) => {
-    getData(req);
-    console.log(product);
-    res.render('products/product', {
-      product: product
-    });
+    var id = parseInt(req.params.id);
+    productsDb.getProductId(id)
+      .then((data) => {
+         res.render('products/product', {
+           product: data
+         });
+      });
+
   })
   .put((req, res) => {
     console.log("put before: ");
